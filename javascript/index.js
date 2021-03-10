@@ -17,6 +17,7 @@ function printTime() {
   // ... your code goes here
   printMinutes();
   printSeconds();
+  printMilliseconds();
 }
 
 function printMinutes() {
@@ -35,42 +36,46 @@ function printSeconds() {
 // ==> BONUS
 function printMilliseconds() {
   // ... your code goes here
+  milUni.innerHTML = chronometer.splitClick()[7];
+  milDec.innerHTML = chronometer.splitClick()[6];
 }
 
 function printSplit() {
   // ... your code goes here
+  let liTag = document.createElement('li');  
+  liTag.innerHTML = chronometer.splitClick();
+  splits.appendChild(liTag);
 }
 
 function clearSplits() {
   // ... your code goes here
+  while(splits.hasChildNodes()){
+    splits.removeChild(splits.childNodes[0]);
+  }
 }
 
 function setStopBtn() {
   // ... your code goes here
   btnLeft.setAttribute('class','btn start');
-  btnLeft.innerHTML = "START";
-  btnRight.setAttribute('class','btn reset');
-  btnRight.innerHTML = "RESET";  
-  chronometer.stopClick();
+  btnLeft.innerHTML = "START"; 
 }
 
 function setSplitBtn() {
   // ... your code goes here
+  btnRight.setAttribute('class','btn split');
+  btnRight.innerHTML = "SPLIT";
 }
 
 function setStartBtn() {
   // ... your code goes here
   btnLeft.setAttribute('class','btn stop');
-  btnLeft.innerHTML = "STOP";
-  btnRight.setAttribute('class','btn split');
-  btnRight.innerHTML = "SPLIT";
-  chronometer.startClick(printTime);
+  btnLeft.innerHTML = "STOP";  
 }
 
 function setResetBtn() {
   // ... your code goes here
-  chronometer.resetClick();
-  printTime();
+  btnRight.setAttribute('class','btn reset');
+  btnRight.innerHTML = "RESET"; 
 }
 
 // Start/Stop Button
@@ -79,10 +84,14 @@ btnLeft.addEventListener('click', () => {
   let btnLeftStatus = btnLeft.innerHTML;
 
   if (btnLeftStatus === "START"){
-    setStartBtn();    
+    chronometer.startClick(printTime);
+    setStartBtn(); 
+    setSplitBtn();   
   }
   if (btnLeftStatus === "STOP"){
-    setStopBtn();      
+    chronometer.stopClick();
+    setStopBtn();
+    setResetBtn();    
   }
 });
 
@@ -92,10 +101,12 @@ btnRight.addEventListener('click', () => {
   let btnRightStatus = btnRight.innerHTML;
 
   if (btnRightStatus === "RESET"){
-    setResetBtn();  
+    chronometer.resetClick();
+    clearSplits();
+    printTime(); 
   }
   if (btnRightStatus === "SPLIT"){
-         
+    printSplit();
   } 
 });
 
